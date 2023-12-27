@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Tool", menuName = "Tool/Create new tool")]
 
+[CreateAssetMenu(fileName = "New Tool", menuName = "Tool/Create new tool")]
 public class ToolBase : ScriptableObject
 {
     [field: SerializeField]

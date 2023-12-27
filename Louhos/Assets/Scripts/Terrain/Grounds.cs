@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Tilemaps;
+
 
 public enum Grounds
 {
@@ -11,6 +9,8 @@ public enum Grounds
     Bedrock,
     DragonStone
 }
+
+
 [Serializable]
 public struct GroundTiles
 {

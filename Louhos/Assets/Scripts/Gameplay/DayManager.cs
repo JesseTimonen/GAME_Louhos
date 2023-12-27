@@ -118,20 +118,24 @@ public class DayManager : MonoBehaviour
         playerInventory.RemoveGround(groundType, amount);
     }
 
+
     private void RewardsFromDirt()
     {
         RewardFromGround(Grounds.Dirt, 0.1f, endDayViewDirtParent, endDayViewDirtText);
     }
+
 
     private void RewardsFromStone()
     {
         RewardFromGround(Grounds.Stone, 0.20f, endDayViewStoneParent, endDayViewStoneText);
     }
 
+
     private void RewardsFromBedrock()
     {
         RewardFromGround(Grounds.Bedrock, 0.35f, endDayViewBedrockParent, endDayViewBedrockText);
     }
+
 
     private void RewardsFromDragonStone()
     {
@@ -163,6 +167,7 @@ public class DayManager : MonoBehaviour
         // Add a little delay so clicking UI, doesn't make player dig
         Invoke("ActivatePlayer", 0.33f);
     }
+
 
     private void ActivatePlayer()
     {

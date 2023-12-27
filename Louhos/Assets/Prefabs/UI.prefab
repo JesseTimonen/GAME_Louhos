@@ -8293,14 +8293,14 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5384630679436427466}
   m_TextComponent: {fileID: 8257164198040859354}
   m_Placeholder: {fileID: 2366441876733611992}
-  m_ContentType: 0
+  m_ContentType: 9
   m_InputType: 0
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
-  m_CharacterLimit: 50
+  m_CharacterValidation: 4
+  m_CharacterLimit: 18
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -25748,7 +25748,7 @@ MonoBehaviour:
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -25761,7 +25761,7 @@ MonoBehaviour:
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
-    m_RichText: 0
+    m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1

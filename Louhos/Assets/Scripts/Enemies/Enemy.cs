@@ -1,14 +1,18 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+
 public class Enemy : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private DayManager dayManager;
+    [SerializeField] private GameObject player;
+    [SerializeField] private PlayerController playerController;
+    private SpriteRenderer spriteRenderer;
+
+    [Header("Enemy Stats")]
     [SerializeField] private float baseSpeed = 1f;
     [SerializeField] private float chaseSpeed = 2f;
     [SerializeField] private float torchSpeed = 1.5f;
@@ -17,25 +21,20 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float aggroDistance = 5f;
     [SerializeField] private float loseInterestDistance = 10f;
     [SerializeField] private float torchDestroyTime = 0.5f;
+
     [SerializeField] private EnemyMoveState moveState;
-    private float torchDestroyTimer;
-    
-    private float moveSpeed;
-    private GameObject player;
-    private PlayerController playerController;
-    private SpriteRenderer spriteRenderer;
     private Vector3 targetPosition;
-    private GameObject torchToDestroy;
-    private bool reachedDest => Vector3.Distance(transform.position, targetPosition) < 0.1f;
     private List<GameObject> torchBuffer;
+    private GameObject torchToDestroy;
+    private float torchDestroyTimer;
+    private float moveSpeed;
+    private bool reachedDest => Vector3.Distance(transform.position, targetPosition) < 0.1f;
 
 
     void Start()
     {
         torchBuffer = new List<GameObject>();
         moveSpeed = baseSpeed;
-        player = GameObject.FindWithTag("Player");
-        playerController = player.GetComponent<PlayerController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         torchDestroyTimer = torchDestroyTime;
         PickNextPatrolPoint();
@@ -85,11 +84,13 @@ public class Enemy : MonoBehaviour
             if (reachedDest)
             {
                 torchDestroyTimer -= Time.deltaTime;
+
                 if (torchDestroyTimer <= 0)
                 {
                     Destroy(torchToDestroy);
                     torchBuffer.Remove(torchToDestroy);
                     torchDestroyTimer = torchDestroyTime;
+
                     if (torchBuffer.Any())
                     {
                         GetTorchFromBuffer();
@@ -98,6 +99,7 @@ public class Enemy : MonoBehaviour
                     {
                         ChangeState(EnemyMoveState.Patrolling);
                     }
+
                     return;
                 }
             }
@@ -105,18 +107,22 @@ public class Enemy : MonoBehaviour
         else
         {
             CheckPlayerAggro();
+
             if (moveState != EnemyMoveState.ChasingPlayer && reachedDest)
             {
                 PickNextPatrolPoint();
             }
         }
+
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }
+
 
     private void FlipSprite()
     {
         spriteRenderer.flipX = (targetPosition.x > transform.position.x);
     }
+
 
     private void ChangeState(EnemyMoveState state)
     {
@@ -143,19 +149,22 @@ public class Enemy : MonoBehaviour
                 GetTorchFromBuffer();
                 break;
         }
-
     }
+
+
     private void GetTorchFromBuffer()
     {
         if (torchBuffer.Any())
         {
             var torch = torchBuffer.First();
+
             if (torch == null)
             {
                 torchBuffer.Remove(torch);
                 GetTorchFromBuffer();
                 return;
             }
+
             targetPosition = torch.transform.position;
             torchToDestroy = torch;
             torch.tag = "TorchUnpickable";
@@ -170,19 +179,24 @@ public class Enemy : MonoBehaviour
         targetPosition = new Vector3(randomX, randomY, 0);
     }
 
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player") && playerController.isActiveAndEnabled)
+        if (other.gameObject == player && playerController.isActiveAndEnabled)
         {
             dayManager.EndDay("feared");
         }
         else if (other.gameObject.CompareTag("TorchAggro"))
         {
             torchBuffer.Add(other.transform.parent.gameObject);
-            if(moveState != EnemyMoveState.GoingForTorch)
+
+            if (moveState != EnemyMoveState.GoingForTorch)
+            {
                 ChangeState(EnemyMoveState.GoingForTorch);
+            }
         }
     }
+
 
     private enum EnemyMoveState
     {

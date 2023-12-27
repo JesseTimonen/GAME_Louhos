@@ -1,17 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
+
 
 [Serializable]
 public struct Valuable
 {
     public Valuables Name;
-    [Range(0,1)]
-    public float Chance;
+    [Range(0,1)] public float Chance;
 }
+
 
 public enum Valuables
 {
@@ -21,6 +19,7 @@ public enum Valuables
     Torch,
     StaminaPotion
 }
+
 
 [Serializable]
 public struct ValuablesTiles

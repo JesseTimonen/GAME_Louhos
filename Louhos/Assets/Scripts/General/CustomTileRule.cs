@@ -1,7 +1,6 @@
-using System.Text.RegularExpressions;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+
 
 [CreateAssetMenu(fileName = "new_tile", menuName = "2D/Tiles/Custom Rule Tile")]
 public class CustomTileRule : RuleTile

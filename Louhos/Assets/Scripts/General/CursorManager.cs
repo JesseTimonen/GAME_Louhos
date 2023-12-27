@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class CursorManager : MonoBehaviour
 {
     [SerializeField] private Texture2D[] cursorTextureArray;
@@ -10,6 +11,7 @@ public class CursorManager : MonoBehaviour
     private int cursorFrameCount;
     private float cursorFrameTimer;
 
+
     private void Awake()
     {
         currentCursorFrame = 0;
@@ -17,6 +19,7 @@ public class CursorManager : MonoBehaviour
         cursorFrameCount = cursorTextureArray.Length;
         Cursor.SetCursor(cursorTextureArray[currentCursorFrame], cursorOffset, CursorMode.Auto);
     }
+
 
     private void Update()
     {
@@ -31,6 +34,4 @@ public class CursorManager : MonoBehaviour
             }
         }
     }
-
-
 }

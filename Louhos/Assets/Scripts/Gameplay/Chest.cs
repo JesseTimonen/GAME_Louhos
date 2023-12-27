@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+
 public class Chest : MonoBehaviour
 {
     [SerializeField] private Text lootText;
@@ -15,44 +16,16 @@ public class Chest : MonoBehaviour
     private Animator animator;
     private PlayerInventory playerInventory;
     private bool isOpened = false;
-    
-    // Rewards:
     private int fullWeight;
-    
 
 
     void Start()
     {
-        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
-        playerInventory = gameManager.GetComponent<PlayerInventory>();
+        playerInventory = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerInventory>();
         animator = GetComponent<Animator>();
         lootText.text = "";
         InitRewards();
         Invoke("PositionChestOnGround", 2);
-    }
-
-    private void InitRewards()
-    {
-        fullWeight = rewards.Sum(r => r.chanceWeight);
-        
-    }
-
-    private (Reward, int) GetReward()
-    {
-        var randNum = Random.Range(0, fullWeight);
-        var sum = 0;
-        for(var i = 0; i < rewards.Length; i++)
-        {
-            sum += rewards[i].chanceWeight;
-            if (sum > randNum)
-            {
-                var reward = rewards[i];
-                var amount = Random.Range(reward.minAmount, reward.maxAmount + 1);
-                return (reward, amount);
-                
-            }
-        }
-        return (new Reward(), 0);
     }
 
 
@@ -63,6 +36,32 @@ public class Chest : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, hit.point.y + 0.6f, transform.position.z);
         }
+    }
+
+
+    private void InitRewards()
+    {
+        fullWeight = rewards.Sum(r => r.chanceWeight);
+    }
+
+
+    private (Reward, int) GetReward()
+    {
+        var randNum = Random.Range(0, fullWeight);
+        var sum = 0;
+
+        for (var i = 0; i < rewards.Length; i++)
+        {
+            sum += rewards[i].chanceWeight;
+            if (sum > randNum)
+            {
+                var reward = rewards[i];
+                var amount = Random.Range(reward.minAmount, reward.maxAmount + 1);
+                return (reward, amount);
+            }
+        }
+
+        return (new Reward(), 0);
     }
 
 
@@ -107,15 +106,17 @@ public class Chest : MonoBehaviour
                 playerInventory.AddStaminaPotion(rewardWithAmount.amount);
                 break;
             default:
-                Debug.Log("Adding " + rewardWithAmount.reward.type + " " + rewardWithAmount.amount);
                 playerInventory.AddValuable((int)rewardWithAmount.reward.type, rewardWithAmount.amount);
                 break;
         }
+
         rewardText.text = rewardWithAmount.amount.ToString();
         rewardText.color = rewardWithAmount.reward.textColor;
         rewardAnimator.runtimeAnimatorController = rewardWithAmount.reward.animation;
         animator.SetTrigger("Open Chest");
     }
+
+
     [Serializable]
     public struct Reward
     {
@@ -127,4 +128,3 @@ public class Chest : MonoBehaviour
         public int chanceWeight;
     }
 }
-

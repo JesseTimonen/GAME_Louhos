@@ -1,21 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public PlayerInventory playerInventory;
 
     [SerializeField] private GameObject GroundTileMap;
     [SerializeField] private GameObject Player;
     [SerializeField] private ShopManager ShopManager;
-
     private PlayerController playerCtrlr;
     private MapManager mapManager;  
-    public PlayerInventory playerInventory;
     [HideInInspector] public AudioManager audioManager;
-    
+
+
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -27,15 +25,18 @@ public class GameManager : MonoBehaviour
         ConnectEvents();
     }
 
+
     public void AddGround(int ground, int amount)
     {
         playerInventory.AddGround(ground, amount);
     }
 
+
     public void AddValuable(int valuable, int amount)
     {
         playerInventory.AddValuable(valuable, amount);
     }
+
 
     void ConnectEvents()
     {

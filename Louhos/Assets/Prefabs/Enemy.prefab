@@ -103,11 +103,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayManager: {fileID: 0}
+  player: {fileID: 0}
+  playerController: {fileID: 0}
   baseSpeed: 1
   chaseSpeed: 2
   torchSpeed: 1.5
-  searchAreaMin: {x: -10, y: -80}
-  searchAreaMax: {x: 60, y: -150}
+  searchAreaMin: {x: -10, y: -120}
+  searchAreaMax: {x: 60, y: -180}
   aggroDistance: 8
   loseInterestDistance: 12
   torchDestroyTime: 0.5

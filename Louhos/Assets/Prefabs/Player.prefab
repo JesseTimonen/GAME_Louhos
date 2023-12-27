@@ -140,13 +140,13 @@ MonoBehaviour:
   climbSpeed: 2
   jumpForce: 320
   jumpCooldownSeconds: 0.25
-  groundCheckBoxSize: {x: 0.5, y: 0.12}
+  groundCheckBoxSize: {x: 0.38, y: 0.12}
   groundCheckCastDistance: 0.6
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  climbCheckBoxSize: {x: -0.1, y: 0.7}
-  climbCheckCastDistance: 0.43
+  climbCheckBoxSize: {x: -0.1, y: 0.45}
+  climbCheckCastDistance: 0.36
   passiveStaminaCost: 1
   climbStaminaCost: 3
   jumpStaminaCost: 5
@@ -10099,7 +10099,7 @@ GameObject:
   - component: {fileID: 5008025657092793781}
   - component: {fileID: 3682411423975146036}
   m_Layer: 0
-  m_Name: Flash Light
+  m_Name: Head Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10215,6 +10215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1677f681726e61a47a5252d6f58986b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 170111699640925248}
 --- !u!1 &4222601702901545615
 GameObject:
   m_ObjectHideFlags: 0
@@ -25183,7 +25184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7386850064661655464, guid: feb2b8c8a6865dc4ab86ae60197cefca, type: 3}
       propertyPath: orthographic size
-      value: 6.3645835
+      value: 5.9270835
       objectReference: {fileID: 0}
     - target: {fileID: 7386850064661655464, guid: feb2b8c8a6865dc4ab86ae60197cefca, type: 3}
       propertyPath: m_BackGroundColor.b
