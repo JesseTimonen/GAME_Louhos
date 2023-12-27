@@ -16,7 +16,7 @@ public class LightLevel : MonoBehaviour
     [SerializeField] private float intensityBelowGround = 0.05f;
     [SerializeField] private float transitionSpeed = 1.0f;
     [SerializeField] private float transitionPoint = -1.0f;
-    [SerializeField] private float intensityThreshold = 0.01f;
+    [SerializeField] private float intensityThreshold = 0.005f;
 
 
     void Update()

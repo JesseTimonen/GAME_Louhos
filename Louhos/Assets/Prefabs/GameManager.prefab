@@ -51,10 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a99baabf5431fdf4ca9cfc83ec4ef0cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInventory: {fileID: 1070133540470240815}
   GroundTileMap: {fileID: 0}
   Player: {fileID: 0}
   ShopManager: {fileID: 0}
-  playerInventory: {fileID: 1070133540470240815}
   audioManager: {fileID: 0}
 --- !u!114 &1070133540470240815
 MonoBehaviour:
@@ -186,10 +186,10 @@ MonoBehaviour:
   playerLightIntensity: 0.5
   playerHeadLightIntensity: 1
   intensityAboveGround: 1
-  intensityBelowGround: 0.02
+  intensityBelowGround: 0
   transitionSpeed: 1
   transitionPoint: -1
-  intensityThreshold: 0.01
+  intensityThreshold: 0.005
 --- !u!114 &3719407431274873583
 MonoBehaviour:
   m_ObjectHideFlags: 0
