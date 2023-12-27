@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{d5fbed8d-91d6-4dcb-a77d-7ac6478ebb25}">
+		<property name="assetPath">
+			<value>Ghost/MNC_Glitch_Whisper.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>5.7272789115646257</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca464621-59fe-4b84-b944-58ef6cdc04dd}</destination>
+		</relationship>
+	</object>
+</objects>

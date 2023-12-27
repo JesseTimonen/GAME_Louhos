@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{21bd7c96-4337-4eca-a674-0967313ad1d0}">
+		<property name="assetPath">
+			<value>Player/Footsteps/ESM_Land_1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.2065079365079365</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca464621-59fe-4b84-b944-58ef6cdc04dd}</destination>
+		</relationship>
+	</object>
+</objects>

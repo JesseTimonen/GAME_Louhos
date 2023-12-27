@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="EncodableAsset" id="{2b6c3e57-c651-4249-a500-dc40ab3bf68c}">
+		<property name="assetPath">
+			<value>Ghost/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca464621-59fe-4b84-b944-58ef6cdc04dd}</destination>
+		</relationship>
+	</object>
+</objects>

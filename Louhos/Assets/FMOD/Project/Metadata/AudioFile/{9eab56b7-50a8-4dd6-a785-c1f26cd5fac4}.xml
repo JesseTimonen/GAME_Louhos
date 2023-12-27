@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{9eab56b7-50a8-4dd6-a785-c1f26cd5fac4}">
+		<property name="assetPath">
+			<value>ESM_One_Shot_Apocalyptic_Game_Item_Burned_Book_Place_1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.34758333333333336</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca464621-59fe-4b84-b944-58ef6cdc04dd}</destination>
+		</relationship>
+	</object>
+</objects>

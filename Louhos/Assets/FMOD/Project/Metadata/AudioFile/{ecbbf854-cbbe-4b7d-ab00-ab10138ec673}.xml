@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="AudioFile" id="{ecbbf854-cbbe-4b7d-ab00-ab10138ec673}">
+		<property name="assetPath">
+			<value>Music/cave_deep.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>151</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ca464621-59fe-4b84-b944-58ef6cdc04dd}</destination>
+		</relationship>
+	</object>
+</objects>

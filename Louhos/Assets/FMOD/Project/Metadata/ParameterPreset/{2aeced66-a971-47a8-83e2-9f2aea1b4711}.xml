@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.01.00">
+	<object class="ParameterPreset" id="{2aeced66-a971-47a8-83e2-9f2aea1b4711}">
+		<property name="color">
+			<value>Blue</value>
+		</property>
+		<property name="name">
+			<value>PlayerDepth</value>
+		</property>
+		<relationship name="folder">
+			<destination>{92dcb2d8-fe08-4c55-a3d6-f965c8794229}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{dff8631a-939b-49ee-9aa2-79a85df70a79}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{dff8631a-939b-49ee-9aa2-79a85df70a79}">
+		<property name="minimum">
+			<value>-256</value>
+		</property>
+		<property name="maximum">
+			<value>32</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>70.909090909090907</value>
+		</property>
+	</object>
+</objects>
