@@ -47,7 +47,7 @@ public class AudioManager : MonoBehaviour
     {
         InitializeAmbience(FMODEvents.Instance.OverworldAmbience, FMODEvents.Instance.CaveAmbience);
         InitializeMusic(FMODEvents.Instance.Music);
-        InvokeRepeating("SetPlayerDepthParameter", 0.5f, 0.5f);
+        InvokeRepeating(nameof(SetPlayerDepthParameter), 0.5f, 0.5f);
     }
 
 

@@ -36,7 +36,7 @@ public class DayManager : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("CheckPlayerStamina", 1, 1);
+        InvokeRepeating(nameof(CheckPlayerStamina), 1, 1);
     }
 
 
@@ -77,7 +77,7 @@ public class DayManager : MonoBehaviour
             dayOverText.text = "Time to end the day";
         }
 
-        CancelInvoke("CheckPlayerStamina");
+        CancelInvoke(nameof(CheckPlayerStamina));
         playerController.enabled = false;
         playerController.drunknessLevel = 0;
         endDayViewDayText.text = "End of day " + currentDay;
@@ -160,12 +160,12 @@ public class DayManager : MonoBehaviour
         int staminaIncrease = purchaseManager.isStaminaUpgradeBought ? 150 : 100;
         playerInventory.AddMaxStamina(staminaIncrease);
         playerInventory.SetStamina(playerInventory.GetMaxStamina());
-        InvokeRepeating("CheckPlayerStamina", 1, 1);
+        InvokeRepeating(nameof(CheckPlayerStamina), 1, 1);
         shopManager.ResetShopUI();
         dayAlreadyEnded = false;
 
         // Add a little delay so clicking UI, doesn't make player dig
-        Invoke("ActivatePlayer", 0.33f);
+        Invoke(nameof(ActivatePlayer), 0.33f);
     }
 
 

@@ -69,6 +69,6 @@ public class PauseManager : MonoBehaviour
     {
         isPaused = false;
         // Small delay to avoid digging when clicking UI
-        Invoke("UpdateGameStatus", 0.1f);
+        Invoke(nameof(UpdateGameStatus), 0.1f);
     }
 }

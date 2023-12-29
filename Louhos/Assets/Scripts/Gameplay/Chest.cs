@@ -25,7 +25,7 @@ public class Chest : MonoBehaviour
         animator = GetComponent<Animator>();
         lootText.text = "";
         InitRewards();
-        Invoke("PositionChestOnGround", 2);
+        Invoke(nameof(PositionChestOnGround), 2);
     }
 
 

@@ -145,8 +145,8 @@ public class PurchaseManager : MonoBehaviour
         else
         {
             errorMessageText.gameObject.SetActive(true);
-            CancelInvoke("clearErrorMessage");
-            Invoke("clearErrorMessage", 3.0f);
+            CancelInvoke(nameof(clearErrorMessage));
+            Invoke(nameof(clearErrorMessage), 3.0f);
         }
     }
 
