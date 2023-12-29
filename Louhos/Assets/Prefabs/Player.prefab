@@ -113,13 +113,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fac27040fc2519409ccfc305cd60720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 492240474437432000}
   mainCamera: {fileID: 9162857754467953690}
-  Highlight: {fileID: 0}
-  digTilemap: {fileID: 0}
   playerAnimator: {fileID: 962317312919104076}
   playerInventory: {fileID: 0}
-  torch: {fileID: 7559817436312301940, guid: ca883bfefc1901c459d105af9e0b8864, type: 3}
-  torchChecker: {fileID: 6579888044493355060}
+  Highlight: {fileID: 0}
+  digTilemap: {fileID: 0}
   digLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -127,30 +126,31 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  torch: {fileID: 7559817436312301940, guid: ca883bfefc1901c459d105af9e0b8864, type: 3}
+  torchChecker: {fileID: 6579888044493355060}
   volume: {fileID: 0}
   dayManager: {fileID: 0}
-  DrunknessDistortionMultiplier: 3
-  DrunknessHueShiftMultiplier: 2
-  DrunknessCameraShiftMultiplier: 1
-  CameraShiftMaxDistance: 3
-  staminaPotionDrunknessGain: 40
-  drunknessLevel: 0
-  rb: {fileID: 492240474437432000}
   walkSpeed: 5
   climbSpeed: 2
   jumpForce: 320
   jumpCooldownSeconds: 0.25
-  groundCheckBoxSize: {x: 0.38, y: 0.12}
-  groundCheckCastDistance: 0.6
+  coyoteTime: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  groundCheckBoxSize: {x: 0.38, y: 0.12}
+  groundCheckCastDistance: 0.6
   climbCheckBoxSize: {x: -0.1, y: 0.45}
   climbCheckCastDistance: 0.36
   passiveStaminaCost: 1
   climbStaminaCost: 3
   jumpStaminaCost: 5
   staminaPotionReplenish: 0.2
+  DrunknessDistortionMultiplier: 3
+  DrunknessHueShiftMultiplier: 2
+  DrunknessCameraShiftMultiplier: 1
+  CameraShiftMaxDistance: 3
+  staminaPotionDrunknessGain: 40
   startingTool: {fileID: 11400000, guid: 868481894cd6d6941a909964c37b6d78, type: 2}
   CurrentTool: {fileID: 0}
   Digging: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   shouldJump: 0
   isJumping: 0
   isGrounded: 1
+  drunknessLevel: 0
 --- !u!1 &326605533113572766
 GameObject:
   m_ObjectHideFlags: 0
@@ -10442,7 +10443,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.03963782, y: -0.37986255}
+  m_Offset: {x: 0.059472084, y: -0.561834}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -10453,7 +10454,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8282361, y: 0.9669683}
+  m_Size: {x: 0.50003624, y: 0.7525019}
   m_EdgeRadius: 0
 --- !u!1 &5753983226932325880
 GameObject:

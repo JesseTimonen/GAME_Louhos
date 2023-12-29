@@ -9,36 +9,32 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform mainCamera;
-    [SerializeField] private GameObject Highlight;
-    [SerializeField] private Tilemap digTilemap;
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private GameObject torch;
-    [SerializeField] private BoxCollider2D torchChecker;
+    [SerializeField] private GameObject Highlight;
+    [SerializeField] private Tilemap digTilemap;
     [SerializeField] private LayerMask digLayer;
     [SerializeField] private Transform[] enemies;
+    [SerializeField] private GameObject torch;
+    [SerializeField] private BoxCollider2D torchChecker;
     [SerializeField] private Volume volume;
     [SerializeField] private DayManager dayManager;
-    [SerializeField] private float DrunknessDistortionMultiplier = 3f;
-    [SerializeField] private float DrunknessHueShiftMultiplier = 2f;
-    [SerializeField] private float DrunknessCameraShiftMultiplier = 1f;
-    [SerializeField] private float CameraShiftMaxDistance = 3f;
-    [SerializeField] private float staminaPotionDrunknessGain = 40f;
-    public float drunknessLevel;
-    private ColorAdjustments colorAdjustments;
-    private LensDistortion lensDistortion;
-    private float currentHueShift = 0;
 
     [Header("Movement")]
-    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float climbSpeed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float jumpCooldownSeconds;
+    [SerializeField] private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
+
+    [Header("Collision checks")]
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Vector2 groundCheckBoxSize;
     [SerializeField] private float groundCheckCastDistance;
-    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Vector2 climbCheckBoxSize;
     [SerializeField] private float climbCheckCastDistance;
 
@@ -48,34 +44,40 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int jumpStaminaCost = 5;
     [SerializeField] [Range(0,1)]private float staminaPotionReplenish = 0.2f;
     private bool isPassiveStaminaCostActive = true;
-    
+
+    [Header("Visual Effects")]
+    [SerializeField] private float DrunknessDistortionMultiplier = 3f;
+    [SerializeField] private float DrunknessHueShiftMultiplier = 2f;
+    [SerializeField] private float DrunknessCameraShiftMultiplier = 1f;
+    [SerializeField] private float CameraShiftMaxDistance = 3f;
+    [SerializeField] private float staminaPotionDrunknessGain = 40f;
+
     [Header("Tools")]
     [SerializeField] private ToolBase startingTool;
     public ToolBase CurrentTool;
     
     public UnityAction<Vector3, float> OnJump;
-    public UnityAction<Vector3, float> OnLand; // TODO: Implement.
+    public UnityAction<Vector3, float> OnLand;
     public UnityAction<Vector3, float> OnWalk;
     public UnityAction<Vector3, float> OnClimb;
     public UnityAction<Vector3, float> OnDig;
     public UnityAction OnPlaceTorch;
     [HideInInspector] public bool Digging;
     [HideInInspector] public bool isFacingRight = true;
-    [HideInInspector] public bool isClimbing = false;
-    [HideInInspector] public bool isClimbingMoving = false;
+    public bool isClimbing = false;
+    public bool isClimbingMoving = false;
+    [HideInInspector] public float horizontal;
+    [HideInInspector] public float vertical;
+    [HideInInspector] public bool shouldJump = false;
+    [HideInInspector] public bool isJumping = false;
+    [HideInInspector] public bool isGrounded = true;
+    [HideInInspector] public float drunknessLevel;
+    private ColorAdjustments colorAdjustments;
+    private LensDistortion lensDistortion;
+    private float currentHueShift = 0;
     private Vector3 lookPosition;
     private Vector3 digPosition;
-    public float horizontal;
-    public float vertical;
-    public bool shouldJump = false;
-    private float coyoteTime = 0.2f;
-    private float coyoteTimeCounter;
-    public bool isJumping = false;
-    public bool isGrounded = true;
-    private float tickrate = 0.6f;
 
-    // For gizmos
-    RaycastHit2D groundHit;
 
     private void Start()
     {
@@ -84,7 +86,7 @@ public class PlayerController : MonoBehaviour
         volume.profile.TryGet<LensDistortion>(out lensDistortion);
         InvokeRepeating(nameof(PassiveStaminaDrain), 1, 1);
         InvokeRepeating(nameof(Drunkness), 1, 1);
-        InvokeRepeating(nameof(TriggerMovementActions), tickrate, tickrate);
+        InvokeRepeating(nameof(TriggerMovementActions), 0.6f, 0.6f);
         EquipTool(startingTool);
     }
 
@@ -202,14 +204,14 @@ public class PlayerController : MonoBehaviour
     {
         if (!isPassiveStaminaCostActive) return;
 
-        int passiveEnergyCost = passiveStaminaCost;
-
         if (isClimbing)
         {
-            passiveEnergyCost = climbStaminaCost;
+            playerInventory.RemoveStamina(climbStaminaCost);
         }
-
-        playerInventory.RemoveStamina(passiveEnergyCost);
+        else
+        {
+            playerInventory.RemoveStamina(passiveStaminaCost);
+        }
     }
 
 
@@ -253,44 +255,35 @@ public class PlayerController : MonoBehaviour
         // Variable jump height
         if (Input.GetButtonUp("Jump") && isJumping)
         {
+            isJumping = false;
+
             if (rb.velocity.y > 0)
             {
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             }
-            isJumping = false;
         }
     }
 
 
     void Movementphysics()
     {
-        #region Jumping
+        // Jumping
         if (shouldJump)
         {
-            playerInventory.RemoveStamina(jumpStaminaCost);
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(rb.velocity.x, jumpForce));
             shouldJump = false;
-            playerAnimator.StopJumpParticles();
             isJumping = true;
+            playerInventory.RemoveStamina(jumpStaminaCost);
+            playerAnimator.StopJumpParticles();
             OnJump?.Invoke(transform.position, jumpForce);
         }
-        #endregion
 
-        #region Walking
+        // Moving
         rb.velocity = new Vector2(horizontal * walkSpeed, rb.velocity.y);
+        playerAnimator.SetIsMoving(horizontal != 0);
 
-        if (horizontal != 0)
-        {
-            playerAnimator.SetIsMoving(true);
-        }
-        else
-        {
-            playerAnimator.SetIsMoving(false);
-        }
-        #endregion
-
-        #region Climbing
+        // Climbing
         if (CanClimb() && (!isGrounded || vertical > 0))
         {
             isClimbing = true;
@@ -301,10 +294,6 @@ public class PlayerController : MonoBehaviour
                 isClimbingMoving = true;
                 rb.velocity = new Vector2(0, climbSpeed * vertical);
             }
-            else
-            {
-                isClimbingMoving = false;
-            }
         }
         else
         {
@@ -314,23 +303,20 @@ public class PlayerController : MonoBehaviour
 
         playerAnimator.SetClimbingMoving(isClimbingMoving);
         playerAnimator.SetIsClimbing(isClimbing);
-        #endregion
 
-        #region Facing
-        if (horizontal > .01f)
+        // Character Facing
+        if (horizontal > .01f && !isFacingRight)
         {
             climbCheckCastDistance = Math.Abs(climbCheckCastDistance);
             climbCheckBoxSize = new Vector2(Math.Abs(climbCheckBoxSize.x), climbCheckBoxSize.y);
             isFacingRight = true;
         }
-
-        if (horizontal < -.01f)
+        else if (horizontal < -.01f && isFacingRight)
         {
             climbCheckCastDistance = -Math.Abs(climbCheckCastDistance);
             climbCheckBoxSize = new Vector2(Math.Abs(climbCheckBoxSize.x), climbCheckBoxSize.y);
             isFacingRight = false;
         }
-        #endregion
     }
 
 
@@ -366,6 +352,7 @@ public class PlayerController : MonoBehaviour
         {
             OnPlaceTorch?.Invoke();
             List<GameObject> nearbyTorches = GetNearbyTorches();
+
             if (nearbyTorches.Count > 0)
             {
                 foreach (GameObject torchObj in nearbyTorches)
@@ -383,9 +370,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private Vector3 RoundTorchPosition(Vector3 ogPos)
+
+    private Vector3 RoundTorchPosition(Vector3 originalPosition)
     {
-        return new Vector3(Mathf.Floor(ogPos.x) + 0.5f, Mathf.Ceil(ogPos.y) - 0.25f, ogPos.z);
+        return new Vector3(Mathf.Floor(originalPosition.x) + 0.5f, Mathf.Ceil(originalPosition.y) - 0.25f, originalPosition.z);
     }
 
 
@@ -393,11 +381,12 @@ public class PlayerController : MonoBehaviour
     {
         List<GameObject> foundTorches = new List<GameObject>();
 
-        Vector2 size = torchChecker.size;
-        Vector2 center = (Vector2)torchChecker.transform.position + torchChecker.offset;
-        float angle = torchChecker.transform.eulerAngles.z;
+        Collider2D[] hits = Physics2D.OverlapBoxAll(
+            (Vector2)torchChecker.transform.position + torchChecker.offset,
+            torchChecker.size,
+            torchChecker.transform.eulerAngles.z
+        );
 
-        Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, angle);
         foreach (Collider2D hit in hits)
         {
             if (hit.gameObject.CompareTag("Torch"))
@@ -445,18 +434,16 @@ public class PlayerController : MonoBehaviour
 
     void MouseLook()
     {
+        Highlight.SetActive(false);
+
         if (isClimbing || !isGrounded)
         {
-            Highlight.SetActive(false);
             return;
         }
 
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
-        Vector3 direction = mousePos - transform.position;
-
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
+        Vector3 direction = mousePosition - transform.position;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, CurrentTool.Range, digLayer);
-
-        Highlight.SetActive(false);
 
         if (hit.collider != null)
         {
@@ -465,7 +452,7 @@ public class PlayerController : MonoBehaviour
             hitPoint.y = hit.point.y - 0.01f * hit.normal.y;
             lookPosition = FloorVector3(hitPoint);
 
-            if (CheckTileAtPosition(lookPosition))
+            if (HasTileAtPosition(lookPosition))
             {
                 Highlight.SetActive(true);
                 Highlight.transform.position = lookPosition;
@@ -474,7 +461,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    bool CheckTileAtPosition(Vector3 position)
+    bool HasTileAtPosition(Vector3 position)
     {
         return digTilemap.GetTile(digTilemap.WorldToCell(position)) != null;
     }
@@ -492,10 +479,13 @@ public class PlayerController : MonoBehaviour
 
     bool IsGrounded()
     {
-        var hit = Physics2D.BoxCast(transform.position - transform.up * groundCheckCastDistance / 2, groundCheckBoxSize, 0, -transform.up, groundCheckCastDistance, groundLayer);
-        groundHit = hit;
-
-        return hit;
+        return Physics2D.BoxCast(
+            transform.position - transform.up * groundCheckCastDistance / 2,
+            groundCheckBoxSize,
+            0,
+            -transform.up,
+            groundCheckCastDistance, groundLayer
+        );
     }
 
 
@@ -507,15 +497,15 @@ public class PlayerController : MonoBehaviour
             0,
             transform.right,
             climbCheckCastDistance,
-            groundLayer);
+            groundLayer
+        );
     }
 
 
     private void OnDrawGizmos()
     {
         // REF: IsGrounded
-        Gizmos.DrawWireCube(transform.position - transform.up * groundCheckCastDistance, groundCheckBoxSize);
-        Gizmos.DrawWireSphere(groundHit.point, .25f);
+        Gizmos.DrawWireCube(transform.position - transform.up * groundCheckCastDistance * 1.5f, groundCheckBoxSize);
 
         // REF: CanClimb
         Gizmos.DrawWireCube(new Vector2(transform.position.x + climbCheckCastDistance, transform.position.y - .5f), climbCheckBoxSize);
